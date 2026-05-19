@@ -9,6 +9,7 @@ import {
 import TestimonialSection from "./TestimonialSection";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
+import { Link } from "react-router-dom";
 
 const HeroSection = () => {
   const [formData, setFormData] = useState({
@@ -140,9 +141,9 @@ const HeroSection = () => {
                 Book Free Demo
               </button>
 
-              <button className="border border-white/10 bg-white/5 hover:bg-white/10 text-white font-semibold px-8 py-4 rounded-2xl transition-all duration-300">
+              <Link target="_blank" to={'https://apxsolution.in/erp'} className="border border-white/10 bg-white/5 hover:bg-white/10 text-white font-semibold px-8 py-4 rounded-2xl transition-all duration-300">
                 Explore ERP Features
-              </button>
+              </Link>
             </div>
 
             {/* Feature Cards */}
