@@ -175,7 +175,7 @@ const HeroSection = () => {
            <div className="order-1 lg:order-2 relative">
                    {/* Badge */}
             <div className="sm:hidden  flex items-center gap-2 border border-cyan-400/20 bg-cyan-500/10 text-cyan-200 px-3 py-3 rounded-full text-xs  backdrop-blur-xl mx-auto my-3 justify-center">
-              <Rocket size={16} />
+              {/* <Rocket size={16} /> */}
               THE ULTIMATE ERP FOR RETAIL & DISTRIBUTION
             </div>
             <div className="bg-[#081529]/95 border border-white/10 rounded-[22px] p-3 sm:p-8 lg:p-10 shadow-2xl backdrop-blur-xl">
