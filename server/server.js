@@ -20,7 +20,9 @@ app.use(
 app.use(express.json());
 
 /* ROUTES */
-
+app.get('/',(req,res)=>{
+  res.send('APX ERP Demo!')
+});
 app.use("/api", consultationRoute);
 
 /* SERVER */
