@@ -245,14 +245,14 @@ console.log(import.meta.env.VITE_BACKEND_API)
                 <div className="absolute left-0 top-0 h-full w-full bg-gradient-to-r from-[#8BD3B4]/10 to-[#FF642E]/10 opacity-0 group-hover:opacity-100 transition-all duration-500" />
 
                 {/* ICON */}
-                <div className="relative flex items-center justify-center w-9 h-9 rounded-full bg-gradient-to-br from-[#8BD3B4] to-[#FF642E] text-[#071120] shadow-lg shadow-[#FF642E]/20">
+                {/* <div className="relative flex items-center justify-center w-9 h-9 rounded-full bg-gradient-to-br from-[#8BD3B4] to-[#FF642E] text-[#071120] shadow-lg shadow-[#FF642E]/20">
                   <Rocket size={18} strokeWidth={2.5} />
-                </div>
+                </div> */}
 
                 {/* TEXT */}
                 <div className="relative flex flex-col">
                   <span className="text-[11px] uppercase tracking-[3px] text-[#8BD3B4] font-bold">
-                  THE ULTIMATE ERP For <br/> Retail & Distribution
+                  THE ULTIMATE ERP For Retail & Distribution
                   </span>
 
                 </div>

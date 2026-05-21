@@ -14,7 +14,14 @@ const app = express();
 // app.use(cors());
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: [
+      "http://localhost:5173",
+      "https://apx-erp-demo.onrender.com",
+    ],
+
+    methods: ["GET", "POST"],
+
+    credentials: true,
   })
 );
 app.use(express.json());
