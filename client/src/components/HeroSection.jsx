@@ -37,7 +37,7 @@ const HeroSection = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+console.log(import.meta.env.VITE_BACKEND_API)
     try {
       setLoading(true);
 
@@ -55,7 +55,7 @@ const HeroSection = () => {
       /* API */
 
       const response = await fetch(
-        `${import.meta.env.BACKEND_API}/api/consultation`,
+        `${import.meta.env.VITE_BACKEND_API}/api/consultation`,
         {
           method: "POST",
 
@@ -142,12 +142,10 @@ const HeroSection = () => {
                 {/* TEXT */}
                 <div className="relative flex flex-col">
                   <span className="text-[11px] uppercase tracking-[3px] text-[#8BD3B4] font-bold">
-                    Next-Generation ERP
+               THE ULTIMATE ERP For Retail & Distribution
+
                   </span>
 
-                  <span className="text-sm font-semibold text-white">
-                    Built for Retail & Distribution
-                  </span>
                 </div>
 
                 {/* DOT */}
@@ -254,12 +252,9 @@ const HeroSection = () => {
                 {/* TEXT */}
                 <div className="relative flex flex-col">
                   <span className="text-[11px] uppercase tracking-[3px] text-[#8BD3B4] font-bold">
-                    Next-Generation ERP
+                  THE ULTIMATE ERP For <br/> Retail & Distribution
                   </span>
 
-                  <span className="text-sm font-semibold text-white">
-                    Built for Retail & Distribution
-                  </span>
                 </div>
 
                 {/* DOT */}
@@ -413,7 +408,7 @@ const HeroSection = () => {
                   <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent group-hover:translate-x-full transition-all duration-1000" />
 
                   {/* CONTENT */}
-                  <div className="relative flex items-center justify-center gap-3">
+                  <div className="relative flex items-center justify-center gap-3 cursor-pointer">
                     {/* LOADING */}
                     {loading ? (
                       <>
@@ -426,7 +421,7 @@ const HeroSection = () => {
                     ) : (
                       <>
                         {/* LIVE DOT */}
-                        <div className="w-3 h-3 rounded-full bg-[#071120] animate-pulse" />
+                        <div className="w-3 h-3 rounded-full bg-[#071120] animate-pulse cursor-pointer" />
 
                         <span className="tracking-wide">
                           BOOK YOUR FREE CONSULTATION
