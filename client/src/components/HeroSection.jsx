@@ -10,8 +10,10 @@ import TestimonialSection from "./TestimonialSection";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import { Link } from "react-router-dom";
-
+import toast from "react-hot-toast";
 const HeroSection = () => {
+  const [loading, setLoading] = useState(false);
+
   const [formData, setFormData] = useState({
     fullName: "",
     companyName: "",
@@ -21,7 +23,76 @@ const HeroSection = () => {
     challenges: "",
   });
 
-  const [loading, setLoading] = useState(false);
+  /* HANDLE CHANGE */
+
+  const handleChange = (e) => {
+    setFormData((prev) => ({
+      ...prev,
+
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  /* HANDLE SUBMIT */
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      setLoading(true);
+
+      /* VALIDATION */
+
+      if (
+        !formData.fullName ||
+        !formData.companyName ||
+        !formData.email ||
+        !formData.phone
+      ) {
+        return toast.error("Please fill all required fields");
+      }
+
+      /* API */
+
+      const response = await fetch(
+        `${import.meta.env.BACKEND_API}/api/consultation`,
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json",
+          },
+
+          body: JSON.stringify(formData),
+        },
+      );
+
+      const data = await response.json();
+
+      /* SUCCESS */
+
+      if (data.success) {
+        toast.success("Consultation Booked Successfully");
+
+        setFormData({
+          fullName: "",
+          companyName: "",
+          email: "",
+          phone: "",
+          businessType: "",
+          challenges: "",
+        });
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      console.log(error);
+
+      toast.error("Server Error");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const features = [
     {
@@ -41,91 +112,58 @@ const HeroSection = () => {
     },
   ];
 
-  const handleChange = (e) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (
-      !formData.fullName ||
-      !formData.companyName ||
-      !formData.email ||
-      !formData.phone ||
-      !formData.businessType
-    ) {
-      alert("Please fill all required fields");
-      return;
-    }
-
-    try {
-      setLoading(true);
-
-      // Example API Call
-      // Replace with your backend URL
-
-      const response = await fetch(
-        "http://localhost:5000/api/consultation",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
-      );
-
-      const data = await response.json();
-
-      if (response.ok) {
-        alert("Consultation booked successfully!");
-
-        setFormData({
-          fullName: "",
-          companyName: "",
-          email: "",
-          phone: "",
-          businessType: "",
-          challenges: "",
-        });
-      } else {
-        alert(data.message || "Something went wrong");
-      }
-    } catch (error) {
-      console.log(error);
-      alert("Server Error");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
     <section className="relative overflow-hidden bg-[#020817] text-white min-h-screen">
       {/* Background Glow */}
       <div className="absolute top-[-150px] left-[-100px] w-[400px] h-[400px] bg-cyan-500/20 blur-[120px]" />
       <div className="absolute bottom-[-200px] right-[-100px] w-[350px] h-[350px] bg-blue-700/20 blur-[120px]" />
-   {/* Navbar */}
-        <Navbar/>
+      {/* Navbar */}
+      <Navbar />
       <div className="max-w-8xl mx-auto px-2 lg:px-8 py-[10vh] sm:py-[10vh] relative z-10">
-     
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-start py-4">
           {/* LEFT SIDE */}
-           <div className="order-2 lg:order-1">
+          <div className="order-2 lg:order-1">
             {/* Badge */}
-            <div className="sm:inline-flex  hidden items-center gap-2 border border-cyan-400/20 bg-cyan-500/10 text-cyan-300 px-5 py-2 rounded-full text-sm font-medium backdrop-blur-xl">
+            {/* <div className="sm:inline-flex  hidden items-center gap-2 border border-cyan-400/20 bg-cyan-500/10 text-cyan-300 px-5 py-2 rounded-full text-sm font-medium backdrop-blur-xl">
               <Rocket size={16} />
               THE ULTIMATE ERP FOR RETAIL & DISTRIBUTION
-            </div>
+            </div> */}
+            {/* Badge */}
+            <div className="hidden sm:flex items-center">
+              <div className="group relative inline-flex items-center gap-3 overflow-hidden rounded-full border border-[#8BD3B4]/20 bg-white/[0.04] px-6 py-3 backdrop-blur-2xl transition-all duration-500 hover:border-[#FF642E]/30">
+                {/* GLOW */}
+                <div className="absolute left-0 top-0 h-full w-full bg-gradient-to-r from-[#8BD3B4]/10 to-[#FF642E]/10 opacity-0 group-hover:opacity-100 transition-all duration-500" />
 
+                {/* ICON */}
+                <div className="relative flex items-center justify-center w-9 h-9 rounded-full bg-gradient-to-br from-[#8BD3B4] to-[#FF642E] text-[#071120] shadow-lg shadow-[#FF642E]/20">
+                  <Rocket size={18} strokeWidth={2.5} />
+                </div>
+
+                {/* TEXT */}
+                <div className="relative flex flex-col">
+                  <span className="text-[11px] uppercase tracking-[3px] text-[#8BD3B4] font-bold">
+                    Next-Generation ERP
+                  </span>
+
+                  <span className="text-sm font-semibold text-white">
+                    Built for Retail & Distribution
+                  </span>
+                </div>
+
+                {/* DOT */}
+                <div className="relative w-2.5 h-2.5 rounded-full bg-[#FF642E] animate-pulse" />
+              </div>
+            </div>
             {/* Heading */}
-            <h1 className="mt-8 text-4xl sm:text-5xl lg:text-6xl leading-tight font-black tracking-tight">
-              Accelerate Your{" "} <br/>
-              <span className="text-cyan-400">Retail & Distribution</span>{" "}
-              Business with APX ERP
+            <h1 className="mt-8 text-4xl sm:text-5xl lg:text-6xl leading-tight font-black tracking-tight text-white">
+              Accelerate Your <br />
+              <span className="bg-gradient-to-r from-[#8BD3B4] to-[#ff7e4f] bg-clip-text text-transparent">
+                Retail & Distribution
+              </span>{" "}
+              Business with{" "}
+              <span className="bg-gradient-to-r from-[#8BD3B4] to-[#ff7e4f] bg-clip-text text-transparent">
+                APX ERP
+              </span>
             </h1>
 
             {/* Description */}
@@ -134,56 +172,124 @@ const HeroSection = () => {
               multi-location management, and order processing with intelligent
               automation built for modern retail and distribution businesses.
             </p>
-
             {/* Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 mt-10">
-              <button className="bg-cyan-400 hover:bg-cyan-300 text-black font-bold px-8 py-4 rounded-2xl transition-all duration-300 shadow-[0_0_40px_rgba(34,211,238,0.35)] hover:scale-105">
+              {/* PRIMARY BUTTON */}
+              <button className="bg-gradient-to-r from-[#8BD3B4] to-[#ff7e4f] hover:scale-105 text-[#071120] font-black px-8 py-4 rounded-xl transition-all duration-300 shadow-[0_0_40px_rgba(255,100,46,0.25)] hover:shadow-[0_0_60px_rgba(139,211,180,0.35)]">
                 Book Free Demo
               </button>
 
-              <Link target="_blank" to={'https://apxsolution.in/erp'} className="border border-white/10 bg-white/5 hover:bg-white/10 text-white font-semibold px-8 py-4 rounded-2xl transition-all duration-300">
+              {/* SECONDARY BUTTON */}
+              <Link
+                target="_blank"
+                to={"https://apxsolution.in/erp"}
+                className="group border border-white/10 bg-white/[0.04] hover:bg-white/[0.08] text-white font-semibold px-8 py-4 rounded-xl transition-all duration-300 backdrop-blur-xl flex items-center justify-center gap-3"
+              >
                 Explore ERP Features
+                <span className="group-hover:translate-x-1 transition-all duration-300">
+                  →
+                </span>
               </Link>
             </div>
-
             {/* Feature Cards */}
-            <div className="hidden sm:grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 mt-14 ">
+            <div className="hidden sm:grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 mt-16">
               {features.map((item, index) => (
                 <div
                   key={index}
-                  className="group bg-white/[0.04] border border-white/10 rounded-3xl p-6 hover:border-cyan-400/30 transition-all duration-500 hover:-translate-y-2 backdrop-blur-xl"
+                  className="group relative overflow-hidden rounded-xl border border-white/10 bg-gradient-to-b from-white/[0.06] to-white/[0.02] p-4 backdrop-blur-2xl transition-all duration-500 hover:-translate-y-3 hover:border-[#8BD3B4]/40"
                 >
-                  <div className="w-14 h-14 rounded-2xl bg-cyan-400 flex items-center justify-center text-black shadow-lg shadow-cyan-500/30">
-                   <span >
-                     {item.icon}
-                    </span>
+                  {/* TOP GLOW */}
+                  <div className="absolute top-[-40px] right-[-40px] w-[120px] h-[120px] bg-[#FF642E]/10 blur-[70px] opacity-0 group-hover:opacity-100 transition-all duration-500" />
+
+                  {/* ICON */}
+                  <div className="relative">
+                    <div className="w-15 h-15 rounded-[12px] bg-gradient-to-br from-[#8BD3B4] to-[#ff7e4f] flex items-center justify-center text-[#071120] shadow-[0_0_40px_rgba(255,100,46,0.25)] group-hover:scale-110 transition-all duration-500">
+                      {/* BIG ICON */}
+                      <span className="scale-[2]">{item.icon}</span>
+                    </div>
                   </div>
 
-                  <h3 className="mt-6 text-2xl font-bold leading-snug">
-                    {item.title}
-                  </h3>
+                  {/* CONTENT */}
+                  <div className="mt-4">
+                    <h3 className="text-lg font-black text-white leading-snug group-hover:text-[#8BD3B4] transition-all duration-300 h-10">
+                      {item.title}
+                    </h3>
 
-                  <p className="mt-4 text-slate-400 leading-7 text-sm">
-                    {item.desc}
-                  </p>
+                    <p className="mt-4 text-slate-400 leading-8 text-[15px] h-25">
+                      {item.desc}
+                    </p>
+                  </div>
+
+                  {/* BOTTOM LINE */}
+                  <div className="mt-8 flex items-center gap-2">
+                    <div className="w-10 h-[3px] rounded-full bg-[#8BD3B4]" />
+                    <div className="w-4 h-[3px] rounded-full bg-[#FF642E]" />
+                  </div>
+
+                  {/* HOVER BORDER EFFECT */}
+                  <div className="absolute inset-0 rounded-[32px] border border-transparent group-hover:border-[#FF642E]/20 pointer-events-none transition-all duration-500" />
                 </div>
               ))}
             </div>
           </div>
 
           {/* RIGHT SIDE FORM */}
-           <div className="order-1 lg:order-2 relative">
-                   {/* Badge */}
-            <div className="sm:hidden  flex items-center gap-2 border border-cyan-400/20 bg-cyan-500/10 text-cyan-200 px-3 py-3 rounded-full text-xs  backdrop-blur-xl mx-auto my-3 justify-center">
-              {/* <Rocket size={16} /> */}
+          <div className="order-1 lg:order-2 relative">
+            {/* Badge */}
+            {/* <div className="sm:hidden  flex items-center gap-2 border border-cyan-400/20 bg-cyan-500/10 text-cyan-200 px-3 py-3 rounded-full text-xs  backdrop-blur-xl mx-auto my-3 justify-center">
+             
               THE ULTIMATE ERP FOR RETAIL & DISTRIBUTION
-            </div>
-            <div className="bg-[#081529]/95 border border-white/10 rounded-[22px] p-3 sm:p-8 lg:p-10 shadow-2xl backdrop-blur-xl">
-              {/* Badge */}
-              <div className="inline-flex bg-cyan-400 text-black font-semibold px-5 py-3 rounded-full text-xs sm:text-sm">
-                GET ERP CONSULTATION
-              </div>
+            </div> */}
+            {/* Badge */}
+            <div className="flex sm:hidden items-center my-4 mx-auto w-full  justify-center place-items-center">
+              <div className="group relative inline-flex items-center gap-3 overflow-hidden  rounded-xl sm:rounded-full border border-[#8BD3B4]/20 bg-white/[0.04] px-6 py-3 backdrop-blur-2xl transition-all duration-500 hover:border-[#FF642E]/30">
+                {/* GLOW */}
+                <div className="absolute left-0 top-0 h-full w-full bg-gradient-to-r from-[#8BD3B4]/10 to-[#FF642E]/10 opacity-0 group-hover:opacity-100 transition-all duration-500" />
 
+                {/* ICON */}
+                <div className="relative flex items-center justify-center w-9 h-9 rounded-full bg-gradient-to-br from-[#8BD3B4] to-[#FF642E] text-[#071120] shadow-lg shadow-[#FF642E]/20">
+                  <Rocket size={18} strokeWidth={2.5} />
+                </div>
+
+                {/* TEXT */}
+                <div className="relative flex flex-col">
+                  <span className="text-[11px] uppercase tracking-[3px] text-[#8BD3B4] font-bold">
+                    Next-Generation ERP
+                  </span>
+
+                  <span className="text-sm font-semibold text-white">
+                    Built for Retail & Distribution
+                  </span>
+                </div>
+
+                {/* DOT */}
+                <div className="relative w-2.5 h-2.5 rounded-full bg-[#FF642E] animate-pulse" />
+              </div>
+            </div>
+            <div className="bg-[#081529]/95 border border-white/10 rounded-[22px] p-3 sm:p-5 lg:p-5 shadow-2xl backdrop-blur-xl">
+              {/* Badge */}
+              {/* <div className="inline-flex bg-cyan-400 text-black font-semibold px-5 py-3 rounded-full text-xs sm:text-sm">
+                GET ERP CONSULTATION
+              </div> */}
+              {/* Badge */}
+              <div className="inline-flex items-center gap-3 relative overflow-hidden rounded-xl sm:rounded-full border border-[#8BD3B4]/20 bg-white/[0.05] px-2 py-3 backdrop-blur-2xl">
+                {/* GLOW */}
+                <div className="absolute inset-0 bg-gradient-to-r from-[#8BD3B4]/10 to-[#FF642E]/10" />
+
+                {/* LIVE DOT */}
+                <div className="relative w-3 h-3 rounded-full bg-[#FF642E] animate-pulse shadow-[0_0_15px_rgba(255,100,46,0.7)]" />
+
+                {/* TEXT */}
+                <div className="relative flex flex-col leading-tight">
+                  <span className="text-[10px] uppercase tracking-[3px] text-[#8BD3B4] font-black">
+                    Free Expert Session
+                  </span>
+
+                  <span className="text-white font-semibold text-xs sm:text-sm">
+                    Get ERP Consultation
+                  </span>
+                </div>
+              </div>
               {/* Heading */}
               <h2 className="mt-7 text-3xl sm:text-4xl font-black leading-tight">
                 Let’s Build Your Smart ERP Workflow
@@ -265,19 +371,23 @@ const HeroSection = () => {
                     Business Type *
                   </label>
 
-             <select
-  name="businessType"
-  value={formData.businessType}
-  onChange={handleChange}
-  className="w-full h-14 px-5 rounded-xl bg-slate-200 text-black outline-none border-2 border-transparent focus:border-cyan-400"
->
-  <option value="">Select Business Type</option>
-  <option value="Retail Business">Retail Business</option>
-  <option value="Distribution Business">Distribution Business</option>
-  <option value="Wholesale Business">Wholesale Business</option>
-  <option value="Electronics Store">Electronics Store</option>
-  <option value="FMCG Distribution">FMCG Distribution</option>
-</select>
+                  <select
+                    name="businessType"
+                    value={formData.businessType}
+                    onChange={handleChange}
+                    className="w-full h-14 px-5 rounded-xl bg-slate-200 text-black outline-none border-2 border-transparent focus:border-cyan-400"
+                  >
+                    <option value="">Select Business Type</option>
+                    <option value="Retail Business">Retail Business</option>
+                    <option value="Distribution Business">
+                      Distribution Business
+                    </option>
+                    <option value="Wholesale Business">
+                      Wholesale Business
+                    </option>
+                    <option value="Electronics Store">Electronics Store</option>
+                    <option value="FMCG Distribution">FMCG Distribution</option>
+                  </select>
                 </div>
 
                 <div>
@@ -294,15 +404,41 @@ const HeroSection = () => {
                     className="w-full p-5 rounded-xl bg-slate-200 text-black outline-none border-2 border-transparent focus:border-cyan-400 resize-none"
                   />
                 </div>
-
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full bg-cyan-400 hover:bg-cyan-300 text-black font-black py-4 rounded-2xl transition-all duration-300 hover:scale-[1.01] shadow-[0_0_40px_rgba(34,211,238,0.35)]"
+                  className="group relative w-full overflow-hidden rounded-xl bg-gradient-to-r from-[#8BD3B4] to-[#FF642E] py-4 font-black text-[#071120] transition-all duration-500 hover:scale-[1.02] hover:shadow-[0_0_60px_rgba(255,100,46,0.35)] disabled:opacity-70 disabled:cursor-not-allowed"
                 >
-                  {loading
-                    ? "Submitting..."
-                    : "BOOK YOUR FREE CONSULTATION"}
+                  {/* SHINE EFFECT */}
+                  <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent group-hover:translate-x-full transition-all duration-1000" />
+
+                  {/* CONTENT */}
+                  <div className="relative flex items-center justify-center gap-3">
+                    {/* LOADING */}
+                    {loading ? (
+                      <>
+                        <div className="w-5 h-5 border-[3px] border-[#071120]/30 border-t-[#071120] rounded-full animate-spin" />
+
+                        <span className="tracking-wide">
+                          Submitting Request...
+                        </span>
+                      </>
+                    ) : (
+                      <>
+                        {/* LIVE DOT */}
+                        <div className="w-3 h-3 rounded-full bg-[#071120] animate-pulse" />
+
+                        <span className="tracking-wide">
+                          BOOK YOUR FREE CONSULTATION
+                        </span>
+
+                        {/* ARROW */}
+                        <span className="text-xl group-hover:translate-x-1 transition-all duration-300">
+                          →
+                        </span>
+                      </>
+                    )}
+                  </div>
                 </button>
 
                 <div className="flex items-center justify-center gap-2 text-sm text-slate-400 pt-2">
@@ -315,10 +451,10 @@ const HeroSection = () => {
         </div>
         {/* Testimonial */}
         <div>
-          <TestimonialSection/>
+          <TestimonialSection />
         </div>
         <div>
-          <Footer/>
+          <Footer />
         </div>
       </div>
     </section>

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Menu, X, ArrowRight } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
+import logo from "../assets/logo.png";
 const Navbar = () => {
   const [mobileMenu, setMobileMenu] = useState(false);
 
@@ -26,13 +27,7 @@ const Navbar = () => {
         {/* LOGO */}
         <div className="flex items-center gap-1 cursor-pointer group">
           <h1 className="text-3xl sm:text-5xl font-black tracking-tight">
-            <span className="text-[#8BE5D2] group-hover:text-cyan-300 transition-all duration-300">
-              AP
-            </span>
-
-            <span className="text-[#FF6B2C] group-hover:rotate-12 inline-block transition-all duration-300">
-              X
-            </span>
+            <img className="w-full h-8 sm:h-10" src={logo} alt="logo" />
           </h1>
         </div>
 
@@ -40,7 +35,7 @@ const Navbar = () => {
         <div className="flex items-center gap-4">
           {/* CTA BUTTON */}
           <Link
-          target="_blank"
+            target="_blank"
             to={"https://apxsolution.in/contact#reach-out"}
             className=" flex items-center gap-2 bg-white text-[#071120] hover:bg-cyan-300 font-bold px-5 sm:px-7 py-2 sm:py-3 rounded-full transition-all duration-300 hover:scale-105 shadow-xl"
           >
