@@ -18,6 +18,9 @@ app.use(
     origin: [
       "http://localhost:5173",
       "https://apx-erp-demo.onrender.com",
+      "https://apx-erp-demo.onrender.com/api/consultation",
+      "https://apxsolution-erp-demo.netlify.app"
+
     ],
 
     methods: ["GET", "POST"],
