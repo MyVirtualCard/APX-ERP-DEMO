@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useRef } from "react";
 import {
   Rocket,
   Package,
@@ -13,7 +14,7 @@ import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 const HeroSection = () => {
   const [loading, setLoading] = useState(false);
-
+const errorTimeoutRef = useRef(null);
   const [formData, setFormData] = useState({
     fullName: "",
     companyName: "",
@@ -25,19 +26,96 @@ const HeroSection = () => {
 
   /* HANDLE CHANGE */
 
+  // const handleChange = (e) => {
+  //   setFormData((prev) => ({
+  //     ...prev,
+
+  //     [e.target.name]: e.target.value,
+  //   }));
+  // };
   const handleChange = (e) => {
     setFormData((prev) => ({
       ...prev,
 
       [e.target.name]: e.target.value,
     }));
-  };
 
+    /* REMOVE ERROR */
+
+    setErrors((prev) => ({
+      ...prev,
+
+      [e.target.name]: "",
+    }));
+  };
+  const [errors, setErrors] = useState({});
+  const validateForm = () => {
+    let newErrors = {};
+
+    /* FULL NAME */
+
+    if (!formData.fullName.trim()) {
+      newErrors.fullName = "FullName is required!";
+    }
+
+    /* COMPANY */
+
+    if (!formData.companyName.trim()) {
+      newErrors.companyName = "CompanyName is required!";
+    }
+
+    /* EMAIL */
+
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required!";
+    } else if (
+      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(formData.email)
+    ) {
+      newErrors.email = "Invalid Email address!";
+    }
+
+    /* PHONE */
+
+    if (!formData.phone.trim()) {
+      newErrors.phone = "Phone is required!";
+    } else if (!/^[6-9]\d{9}$/.test(formData.phone)) {
+      newErrors.phone = "Enter valid 10 digit mobile number";
+    }
+
+    /* BUSINESS TYPE */
+
+    if (!formData.businessType) {
+      newErrors.businessType = "Please Select Business Type!";
+    }
+
+    /* CHALLENGES */
+
+    if (!formData.challenges.trim()) {
+      newErrors.challenges = "Business challenges required!";
+    }
+
+    setErrors(newErrors);
+     /* CLEAR OLD TIMER */
+
+  if (errorTimeoutRef.current) {
+    clearTimeout(errorTimeoutRef.current);
+  }
+
+  /* AUTO REMOVE */
+
+  if (Object.keys(newErrors).length > 0) {
+    errorTimeoutRef.current = setTimeout(() => {
+      setErrors({});
+    }, 3000);
+  }
+
+  return Object.keys(newErrors).length === 0;
+  };
   /* HANDLE SUBMIT */
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-console.log(import.meta.env.VITE_BACKEND_API)
+    if (!validateForm()) return;
     try {
       setLoading(true);
 
@@ -142,10 +220,8 @@ console.log(import.meta.env.VITE_BACKEND_API)
                 {/* TEXT */}
                 <div className="relative flex flex-col">
                   <span className="text-[11px] uppercase tracking-[3px] text-[#8BD3B4] font-bold">
-               THE ULTIMATE ERP For Retail & Distribution
-
+                    THE ULTIMATE ERP For Retail & Distribution
                   </span>
-
                 </div>
 
                 {/* DOT */}
@@ -153,7 +229,7 @@ console.log(import.meta.env.VITE_BACKEND_API)
               </div>
             </div>
             {/* Heading */}
-            <h1 className="mt-8 text-4xl sm:text-5xl lg:text-6xl leading-tight font-black tracking-tight text-white">
+            <h2 className="mt-8 text-4xl sm:text-5xl lg:text-5xl leading-tight font-black tracking-tight text-white">
               Accelerate Your <br />
               <span className="bg-gradient-to-r from-[#8BD3B4] to-[#ff7e4f] bg-clip-text text-transparent">
                 Retail & Distribution
@@ -162,7 +238,7 @@ console.log(import.meta.env.VITE_BACKEND_API)
               <span className="bg-gradient-to-r from-[#8BD3B4] to-[#ff7e4f] bg-clip-text text-transparent">
                 APX ERP
               </span>
-            </h1>
+            </h2>
 
             {/* Description */}
             <p className="mt-8 text-slate-300 text-base sm:text-xl leading-8 max-w-2xl">
@@ -252,9 +328,8 @@ console.log(import.meta.env.VITE_BACKEND_API)
                 {/* TEXT */}
                 <div className="relative flex flex-col">
                   <span className="text-[11px] uppercase tracking-[3px] text-[#8BD3B4] font-bold">
-                  THE ULTIMATE ERP For Retail & Distribution
+                    THE ULTIMATE ERP For Retail & Distribution
                   </span>
-
                 </div>
 
                 {/* DOT */}
@@ -303,14 +378,32 @@ console.log(import.meta.env.VITE_BACKEND_API)
                       Full Name *
                     </label>
 
-                    <input
+                    {/* <input
                       type="text"
                       name="fullName"
                       value={formData.fullName}
                       onChange={handleChange}
                       placeholder="Enter your full name"
                       className="w-full h-14 px-5 rounded-xl bg-slate-200 text-black outline-none border-2 border-transparent focus:border-cyan-400"
+                    /> */}
+                    <input
+                      type="text"
+                      name="fullName"
+                      value={formData.fullName}
+                      onChange={handleChange}
+                      placeholder="Enter your full name"
+                      className={`w-full h-14 px-5 rounded-xl bg-slate-200 text-black outline-none border-2 transition-all duration-300 ${
+                        errors.fullName
+                          ? "border-[#86CCB0]"
+                          : "border-transparent focus:border-cyan-400"
+                      }`}
                     />
+
+                    {errors.fullName && (
+                      <p className="text-[#86CCB0] text-sm mt-2">
+                        {errors.fullName}
+                      </p>
+                    )}
                   </div>
 
                   <div>
@@ -323,9 +416,19 @@ console.log(import.meta.env.VITE_BACKEND_API)
                       name="companyName"
                       value={formData.companyName}
                       onChange={handleChange}
-                      placeholder="Enter company name"
-                      className="w-full h-14 px-5 rounded-xl bg-slate-200 text-black outline-none border-2 border-transparent focus:border-cyan-400"
+                      placeholder="Enter your full name"
+                      className={`w-full h-14 px-5 rounded-xl bg-slate-200 text-black outline-none border-2 transition-all duration-300 ${
+                        errors.companyName
+                          ? "border-[#86CCB0]"
+                          : "border-transparent focus:border-cyan-400"
+                      }`}
                     />
+
+                    {errors.companyName && (
+                      <p className="text-[#86CCB0] text-sm mt-2">
+                        {errors.companyName}
+                      </p>
+                    )}
                   </div>
                 </div>
 
@@ -340,9 +443,19 @@ console.log(import.meta.env.VITE_BACKEND_API)
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
-                      placeholder="Enter business email"
-                      className="w-full h-14 px-5 rounded-xl bg-slate-200 text-black outline-none border-2 border-transparent focus:border-cyan-400"
+                      placeholder="Enter your full name"
+                      className={`w-full h-14 px-5 rounded-xl bg-slate-200 text-black outline-none border-2 transition-all duration-300 ${
+                        errors.email
+                          ? "border-[#86CCB0]"
+                          : "border-transparent focus:border-cyan-400"
+                      }`}
                     />
+
+                    {errors.email && (
+                      <p className="text-[#86CCB0] text-sm mt-2">
+                        {errors.email}
+                      </p>
+                    )}
                   </div>
 
                   <div>
@@ -355,9 +468,19 @@ console.log(import.meta.env.VITE_BACKEND_API)
                       name="phone"
                       value={formData.phone}
                       onChange={handleChange}
-                      placeholder="Enter mobile number"
-                      className="w-full h-14 px-5 rounded-xl bg-slate-200 text-black outline-none border-2 border-transparent focus:border-cyan-400"
+                      placeholder="Enter your full name"
+                      className={`w-full h-14 px-5 rounded-xl bg-slate-200 text-black outline-none border-2 transition-all duration-300 ${
+                        errors.phone
+                          ? "border-[#86CCB0]"
+                          : "border-transparent focus:border-cyan-400"
+                      }`}
                     />
+
+                    {errors.phone && (
+                      <p className="text-[#86CCB0] text-sm mt-2">
+                        {errors.phone}
+                      </p>
+                    )}
                   </div>
                 </div>
 
@@ -370,7 +493,11 @@ console.log(import.meta.env.VITE_BACKEND_API)
                     name="businessType"
                     value={formData.businessType}
                     onChange={handleChange}
-                    className="w-full h-14 px-5 rounded-xl bg-slate-200 text-black outline-none border-2 border-transparent focus:border-cyan-400"
+                    className={`w-full h-14 px-5 rounded-xl bg-slate-200 text-black outline-none border-2 border-transparent focus:border-cyan-400 ${
+                      errors.phone
+                        ? "border-[#86CCB0]"
+                        : "border-transparent focus:border-cyan-400"
+                    }`}
                   >
                     <option value="">Select Business Type</option>
                     <option value="Retail Business">Retail Business</option>
@@ -383,6 +510,11 @@ console.log(import.meta.env.VITE_BACKEND_API)
                     <option value="Electronics Store">Electronics Store</option>
                     <option value="FMCG Distribution">FMCG Distribution</option>
                   </select>
+                  {errors.businessType && (
+                    <p className="text-[#86CCB0] text-sm mt-2">
+                      {errors.businessType}
+                    </p>
+                  )}
                 </div>
 
                 <div>
@@ -390,14 +522,33 @@ console.log(import.meta.env.VITE_BACKEND_API)
                     Business Challenges *
                   </label>
 
-                  <textarea
+                  {/* <textarea
                     rows="5"
                     name="challenges"
                     value={formData.challenges}
                     onChange={handleChange}
                     placeholder="Tell us about inventory, CRM, billing, sales or workflow challenges"
                     className="w-full p-5 rounded-xl bg-slate-200 text-black outline-none border-2 border-transparent focus:border-cyan-400 resize-none"
+                  /> */}
+
+                  <textarea
+                    rows="5"
+                    name="challenges"
+                    value={formData.challenges}
+                    onChange={handleChange}
+                    placeholder="Enter your full name"
+                    className={`w-full p-5 rounded-xl bg-slate-200 text-black outline-none border-2 border-transparent focus:border-cyan-400 resize-none ${
+                      errors.challenges
+                        ? "border-[#86CCB0]"
+                        : "border-transparent focus:border-cyan-400"
+                    }`}
                   />
+
+                  {errors.challenges && (
+                    <p className="text-[#86CCB0] text-sm mt-2">
+                      {errors.challenges}
+                    </p>
+                  )}
                 </div>
                 <button
                   type="submit"

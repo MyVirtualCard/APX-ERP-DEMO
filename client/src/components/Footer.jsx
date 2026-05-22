@@ -1,6 +1,7 @@
 import { ArrowUpRight, Mail, MapPin, Phone } from "lucide-react";
 import React from "react";
 import { BsFacebook, BsInstagram, BsLinkedin, BsTwitter } from "react-icons/bs";
+import logo from "../assets/logo.png";
 const Footer = () => {
   const menuLinks = [
     "Home",
@@ -26,13 +27,12 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-14">
           {/* LOGO + ABOUT */}
           <div className="lg:col-span-2">
-            {/* LOGO */}
-            <div className="flex items-center gap-1">
-              <h1 className="text-6xl font-black tracking-tight">
-                <span className="text-[#8BE5D2]">AP</span>
-                <span className="text-[#FF6B2C]">X</span>
-              </h1>
-            </div>
+                 {/* LOGO */}
+                  <div className="flex items-center gap-1 cursor-pointer group">
+                    <h1 className="text-3xl sm:text-5xl font-black tracking-tight">
+                      <img className="w-full h-8 sm:h-10" src={logo} alt="logo" />
+                    </h1>
+                  </div>
 
             {/* DESCRIPTION */}
             <p className="mt-8 text-slate-400 leading-8 max-w-xl text-base">
