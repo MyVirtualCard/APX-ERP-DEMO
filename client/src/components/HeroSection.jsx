@@ -391,7 +391,7 @@ const errorTimeoutRef = useRef(null);
                       name="fullName"
                       value={formData.fullName}
                       onChange={handleChange}
-                      placeholder="Enter your full name"
+                      placeholder="Enter your FullName.."
                       className={`w-full h-14 px-5 rounded-xl bg-slate-200 text-black outline-none border-2 transition-all duration-300 ${
                         errors.fullName
                           ? "border-[#86CCB0]"
@@ -416,7 +416,7 @@ const errorTimeoutRef = useRef(null);
                       name="companyName"
                       value={formData.companyName}
                       onChange={handleChange}
-                      placeholder="Enter your full name"
+                      placeholder="Enter your CompanyName.."
                       className={`w-full h-14 px-5 rounded-xl bg-slate-200 text-black outline-none border-2 transition-all duration-300 ${
                         errors.companyName
                           ? "border-[#86CCB0]"
@@ -443,7 +443,7 @@ const errorTimeoutRef = useRef(null);
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
-                      placeholder="Enter your full name"
+                      placeholder="Enter your Email.."
                       className={`w-full h-14 px-5 rounded-xl bg-slate-200 text-black outline-none border-2 transition-all duration-300 ${
                         errors.email
                           ? "border-[#86CCB0]"
@@ -468,7 +468,7 @@ const errorTimeoutRef = useRef(null);
                       name="phone"
                       value={formData.phone}
                       onChange={handleChange}
-                      placeholder="Enter your full name"
+                      placeholder="Enter your MobileNumber.."
                       className={`w-full h-14 px-5 rounded-xl bg-slate-200 text-black outline-none border-2 transition-all duration-300 ${
                         errors.phone
                           ? "border-[#86CCB0]"
@@ -536,7 +536,7 @@ const errorTimeoutRef = useRef(null);
                     name="challenges"
                     value={formData.challenges}
                     onChange={handleChange}
-                    placeholder="Enter your full name"
+                    placeholder="Write ShortNote your Challenges"
                     className={`w-full p-5 rounded-xl bg-slate-200 text-black outline-none border-2 border-transparent focus:border-cyan-400 resize-none ${
                       errors.challenges
                         ? "border-[#86CCB0]"
