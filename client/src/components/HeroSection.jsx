@@ -229,7 +229,7 @@ const errorTimeoutRef = useRef(null);
               </div>
             </div>
             {/* Heading */}
-            <h2 className="mt-8 text-4xl sm:text-5xl lg:text-5xl leading-tight font-black tracking-tight text-white">
+            <h2 className="mt-4 sm:mt-8 text-3xl sm:text-5xl lg:text-5xl leading-tight font-black tracking-tight text-white">
               Accelerate Your <br />
               <span className="bg-gradient-to-r from-[#8BD3B4] to-[#ff7e4f] bg-clip-text text-transparent">
                 Retail & Distribution
@@ -574,7 +574,7 @@ const errorTimeoutRef = useRef(null);
                         {/* LIVE DOT */}
                         <div className="w-3 h-3 rounded-full bg-[#071120] animate-pulse cursor-pointer" />
 
-                        <span className="tracking-wide">
+                        <span className="tracking-wide text-[12px] sm:text-lg">
                           BOOK YOUR FREE CONSULTATION
                         </span>
 
