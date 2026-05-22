@@ -12,22 +12,22 @@ const app = express();
 
 /* MIDDLEWARE */
 
-// app.use(cors());
-app.use(
-  cors({
-    origin: [
-      "http://localhost:5173",
-      "https://apx-erp-demo.onrender.com",
-      "https://apx-erp-demo.onrender.com/api/consultation",
-      "https://apxsolution-erp-demo.netlify.app"
+app.use(cors());
+// app.use(
+//   cors({
+//     origin: [
+//       "http://localhost:5173",
+//       "https://apx-erp-demo.onrender.com",
+//       "https://apx-erp-demo.onrender.com/api/consultation",
+//       "https://apxsolution-erp-demo.netlify.app"
 
-    ],
+//     ],
 
-    methods: ["GET", "POST"],
+//     methods: ["GET", "POST"],
 
-    credentials: true,
-  })
-);
+//     credentials: true,
+//   })
+// );
 app.use(express.json());
 
 /* ROUTES */
